@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quantum Teleportation Visualizer</title>
+  <meta name="description" content="Interactive visualization of the Quantum Teleportation Protocol using Qiskit-style simulation with step-by-step qubit calculations.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Animated background particles -->
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- Header -->
+  <header id="site-header">
+    <div class="header-glow"></div>
+    <div class="header-content">
+      <div class="logo-group">
+        <div class="logo-icon">⚛</div>
+        <div>
+          <h1>Quantum Teleportation</h1>
+          <p class="subtitle">Hybrid Visualization System &mdash; Qiskit + Arduino</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="serial-btn" onclick="connectArduino()">
+          <span class="btn-icon">🔌</span> Connect Arduino
+        </button>
+        <div id="serial-status" class="serial-badge disconnected">Disconnected</div>
+        <button id="run-btn" onclick="runTeleportation()">
+          <span class="btn-icon">▶</span> Run Teleportation
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Overview Cards -->
+    <section id="overview" class="section">
+      <div class="cards-row">
+        <div class="info-card" id="card-q0">
+          <div class="card-icon">ψ</div>
+          <h3>Qubit 0 — Input</h3>
+          <p>The unknown quantum state to be teleported to the output qubit.</p>
+          <div class="card-state" id="q0-state">|ψ⟩ = α|0⟩ + β|1⟩</div>
+        </div>
+        <div class="info-card" id="card-q1">
+          <div class="card-icon">E</div>
+          <h3>Qubit 1 — Entangled</h3>
+          <p>One half of the entangled Bell pair shared with the output qubit.</p>
+          <div class="card-state" id="q1-state">|0⟩</div>
+        </div>
+        <div class="info-card" id="card-q2">
+          <div class="card-icon">O</div>
+          <h3>Qubit 2 — Output</h3>
+          <p>The output half of the entangled pair — receives the teleported state.</p>
+          <div class="card-state" id="q2-state">|0⟩</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Circuit Diagram -->
+    <section id="circuit-section" class="section">
+      <h2 class="section-title"><span class="accent-dot"></span> Quantum Circuit</h2>
+      <div class="circuit-container">
+        <canvas id="circuit-canvas" width="900" height="280"></canvas>
+      </div>
+    </section>
+
+    <!-- Step-by-step Calculations -->
+    <section id="steps-section" class="section">
+      <h2 class="section-title"><span class="accent-dot"></span> Step-by-Step Calculation</h2>
+      <div id="steps-container"></div>
+    </section>
+
+    <!-- Results Section -->
+    <section id="results-section" class="section hidden">
+      <h2 class="section-title"><span class="accent-dot"></span> Measurement Results</h2>
+      <div id="shots-info" class="shots-info"></div>
+      <div class="results-grid">
+        <div class="result-panel" id="panel-counts">
+          <h3>Output Distribution</h3>
+          <div id="histogram"></div>
+        </div>
+        <div class="result-panel" id="panel-leds">
+          <h3>Arduino LED Visualization</h3>
+          <p class="led-subtitle">Latest measurement sent to Arduino</p>
+          <div class="led-row">
+            <div class="led-unit">
+              <div class="led" id="led0"></div>
+              <span>Q0 (Input)</span>
+            </div>
+            <div class="led-unit">
+              <div class="led" id="led1"></div>
+              <span>Q1 (Entangled)</span>
+            </div>
+            <div class="led-unit">
+              <div class="led" id="led2"></div>
+              <span>Q2 (Output)</span>
+            </div>
+          </div>
+          <div id="led-value" class="led-value"></div>
+        </div>
+      </div>
+      <!-- Individual Shot Log -->
+      <div class="result-panel" id="panel-shots" style="margin-top:1.5rem;">
+        <h3>Shot-by-Shot Log</h3>
+        <div id="shot-log" class="shot-log"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Hybrid Quantum Teleportation System &bull; Qiskit + Arduino &bull; Physics Project 2026</p>
+  </footer>
+
+  <script src="quantum.js"></script>
+</body>
+</html>
